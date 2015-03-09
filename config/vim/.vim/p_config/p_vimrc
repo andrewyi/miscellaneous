@@ -1,0 +1,9 @@
+" libcpp headers
+set tags+=~/.vim/p_addons/tags
+
+" set header file search dir
+" set path+=/home/jdpnyi/workspace/platform_related/auction/auction_comm/export_include
+
+" set tags
+" set tags+=/home/jdpnyi/workspace/paipai_basebiz_rep/Auction_proj/trunk/auction_comm/export_include/library/tags
+

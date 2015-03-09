@@ -1,0 +1,1 @@
+TabManager.vba: call delete('/home/andrew/.vim/plugin/TabManager.vim')|call delete('/home/andrew/.vim/doc/TabManager.txt')
