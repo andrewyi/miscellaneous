@@ -448,7 +448,8 @@ function! s:MapKeys()
     nnoremap <script> <silent> <buffer> q             :call <SID>Close()<CR>
     nnoremap <script> <silent> <buffer> r             :call <SID>SortReverse()<CR>
     nnoremap <script> <silent> <buffer> R             :call <SID>ToggleShowRelativePath()<CR>
-    nnoremap <script> <silent> <buffer> s             :call <SID>SortSelect()<CR>
+    " nnoremap <script> <silent> <buffer> s             :call <SID>SortSelect()<CR>
+    nnoremap <script> <silent> <buffer> s             :call <SID>SplitSelect()<CR>
     nnoremap <script> <silent> <buffer> S             :call <SID>ReverseSortSelect()<CR>
     nnoremap <script> <silent> <buffer> t             :call <SID>SelectBuffer("tab")<CR>
     nnoremap <script> <silent> <buffer> T             :call <SID>ToggleShowTabBuffer()<CR>
@@ -1007,6 +1008,12 @@ endfunction
 
 " SortSelect {{{2
 function! s:SortSelect()
+    let g:bufExplorerSortBy = get(s:sort_by, index(s:sort_by, g:bufExplorerSortBy) + 1, s:sort_by[0])
+    call s:ReSortListing()
+endfunction
+
+" SplitSelect {{{2
+function! s:SplitSelect()
     let g:bufExplorerSortBy = get(s:sort_by, index(s:sort_by, g:bufExplorerSortBy) + 1, s:sort_by[0])
     call s:ReSortListing()
 endfunction

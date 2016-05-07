@@ -1,5 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_cnt =8
 let g:netrw_dirhist_1='/usr/enhanced/lib/python2.7/site-packages'
 let g:netrw_dirhist_2='/etc/yum.repos.d'
 let g:netrw_dirhist_3='/home/andrew/.vim/plugin/syntastic'
+let g:netrw_dirhist_4='/Users/andrewyi/workspace/ycy/testspace/python_package/tss'
+let g:netrw_dirhist_5='/Users/andrewyi/.ssh'
+let g:netrw_dirhist_6='/Users/andrewyi/workspace/ycy/dev/source/merchant-web/.git'
+let g:netrw_dirhist_7='/Users/andrewyi/workspace/ycy/dev/source/planx-wechat/migrations'
+let g:netrw_dirhist_8='/Users/andrewyi/hehe'

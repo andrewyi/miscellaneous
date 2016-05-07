@@ -24,10 +24,10 @@ imap <C-\> <Esc>
 
 syntax on
 colorscheme kolor
-nmap di :diffthis<CR>
+" nmap di :diffthis<CR>
 nmap <silent><C-W>n :vnew<CR>
-nmap <silent><C-J> <C-E>j
-nmap <silent><C-K> <C-Y>k
+" nmap <silent><C-J> <C-E>j
+" nmap <silent><C-K> <C-Y>k
 nmap <silent><TAB>h :tabprev<CR>
 nmap <silent><TAB>l :tabnext<CR>
 nmap <silent> <C-N> :tabnew<CR>
@@ -67,7 +67,7 @@ let NERDTreeChDirMode=2
 
 " bufexplorer settings
 nmap <silent><F10> :BufExplorerVerticalSplit<CR>
-nmap <silent><C-M> :BufExplorer<CR>
+nmap <silent><C-J> :BufExplorer<CR>
 let g:bufExplorerSortBy='mru'        " Sort by most recently used.
 let g:bufExplorerSplitRight=1        " Split right.
 let g:bufExplorerSplitVertical=1     " Split vertically.
@@ -125,12 +125,19 @@ au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
 " let g:airline_detect_paste=1
 " let g:airline_left_sep='>'
 " let g:airline_right_sep='<'
-let g:airline_exclude_filenames = [] " see source for current list
+let g:airline_exclude_filenames = [] " see source for currenat list
 let g:airline_detect_whitespace=0
 let g:airline#extensions#whitespace#enabled=0
+" let g:airline#extensions#tabline#enabled = 1
 " let g:airline_section_b=0
 set laststatus=2
 
 " sources machine dependent configration
 source ~/.vim/p_config/p_vimrc
 
+" python editor
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+
+" highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+" match OverLength /\%79v.\+/
+set colorcolumn=79
