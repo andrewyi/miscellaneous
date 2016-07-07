@@ -1,6 +1,8 @@
-" andrew's vimrc, for c++
+" andrew's vimrc
 
 " common settings
+
+filetype on
 filetype plugin indent on
 set ignorecase
 set tabstop=4
@@ -16,14 +18,42 @@ set path+=../src
 set path+=../include
 set cursorline
 " set vb
+syntax on
+colorscheme kolor
 
+" encoding settings
+set fileencodings=utf8,cp936
+set encoding=utf8
+" set encoding=utf8
+
+" go to last edit position if possiable
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+" cd file dir
+" autocmd BufEnter * silent! lcd %:p:h
+
+" highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+" match OverLength /\%79v.\+/
+set colorcolumn=79
+
+" windows settings
+if !has("unix")
+    if has("gui_running")
+        set guioptions -=m
+        set guioptions -=T
+        set guifont=Courier_New:h11:cANSI
+        set encoding=cp936
+    endif
+else
+    set t_Co=256
+endif
+
+" andrewyi shortcut
 nmap qq :q<CR>
 nmap qw :wq<CR>
 nmap qf :q!<CR>
 imap <C-\> <Esc>
 
-syntax on
-colorscheme kolor
 " nmap di :diffthis<CR>
 nmap <silent><C-W>n :vnew<CR>
 " nmap <silent><C-J> <C-E>j
@@ -33,26 +63,11 @@ nmap <silent><TAB>l :tabnext<CR>
 nmap <silent> <C-N> :tabnew<CR>
 nmap <F7> :lcd %:p:h<CR>
 nmap <F5> :edit!<CR>
-" go to last edit position if possiable
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
-
-" cd file dir
-" autocmd BufEnter * silent! lcd %:p:h
-
-" encoding settings
-set fileencodings=utf8,cp936
-set encoding=utf8
-" set encoding=utf8
-
-" project settings
-nmap <silent> <F12> <Plug>ToggleProject
-let g:proj_window_width=32
-let g:proj_flags="icgiLmsn"
 
 " NERDTree settings
-nmap <silent> <F11> :NERDTreeToggle<CR>
+" nmap <silent> <F11> :NERDTreeToggle<CR>
 nmap <silent> <C-H> :NERDTreeToggle<CR>
-nmap <silent> <F6> :NERDTreeFind<CR>
+nmap <silent> <F1> :NERDTreeFind<CR>
 let NERDTreeIgnore=['\.svn$', '\.git.*$']
 let NERDTreeChDirMode=1
 let NERDTreeHighlightCursorline=1
@@ -66,7 +81,7 @@ let NERDTreeMinimalUI=1
 let NERDTreeChDirMode=2
 
 " bufexplorer settings
-nmap <silent><F10> :BufExplorerVerticalSplit<CR>
+" nmap <silent><F10> :BufExplorerVerticalSplit<CR>
 nmap <silent><C-J> :BufExplorer<CR>
 let g:bufExplorerSortBy='mru'        " Sort by most recently used.
 let g:bufExplorerSplitRight=1        " Split right.
@@ -77,21 +92,6 @@ let g:bufExplorerUseCurrentWindow=1  " Open in new window.
 let g:bufExplorerDefaultHelp=0       " do not show default help
 let g:bufExplorerShowNoName=1        " show no name buffers
 " autocmd BufWinEnter \[Buf\ List\] setl nonumber 
-
-" syntastic settings
-" let g:syntastic_check_on_open=1
-
-" windows settings
-if !has("unix")
-    if has("gui_running")
-        set guioptions -=m
-        set guioptions -=T
-        set guifont=Courier_New:h11:cANSI
-        set encoding=cp936
-    endif
-else
-    set t_Co=256
-endif
 
 " tags settings
 nmap <silent> <F8> :!ctags -R --c++-kinds=+px --fields=+iaS --extra=+q --languages=C++,C <CR>
@@ -132,15 +132,8 @@ let g:airline#extensions#whitespace#enabled=0
 " let g:airline_section_b=0
 set laststatus=2
 
-" sources machine dependent configration
-source ~/.vim/p_config/p_vimrc
-
 " python editor
 " autocmd FileType python set omnifunc=pythoncomplete#Complete
-
-" highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-" match OverLength /\%79v.\+/
-set colorcolumn=79
 
 " jedi-vim settings
 let g:jedi#use_tabs_not_buffers = 1
@@ -155,5 +148,36 @@ let g:jedi#completions_command = ""
 let g:jedi#rename_command = "<leader>r"
 let g:jedi#show_call_signatures = 0 " disable auto complete
 
-" 
+" andrew yi sources machine dependent configration
+" source ~/.vim/p_config/p_vimrc
+
+" i don't know
+let g:pydiction_location = '~/.vim/p_addons/complete-dict'
+let g:pydiction_menu_height = 3
+
+" vim flask8 settings
+autocmd FileType python map <buffer> <F2> :call Flake8()<CR>
+" let g:flake8_quickfix_location="topleft"
+"
+let g:flake8_show_in_gutter = 1
+let g:flake8_error_marker = '->'     " set error marker to 'EE'
+let g:flake8_warning_marker = ''     " set warning marker to 'WW'
+let g:flake8_pyflake_marker = ''     " disable PyFlakes warnings
+let g:flake8_complexity_marker = ''  " disable McCabe complexity warnings
+let g:flake8_naming_marker = ''      " disable naming warnings
+let g:flake8_show_quickfix=0
+
+" autocmd BufWritePost *.py call Flake8()
+
+" absolute
+
+" project settings
+" nmap <silent> <F12> <Plug>ToggleProject
+" let g:proj_window_width=32
+" let g:proj_flags="icgiLmsn"
+
+" syntastic settings
+" let g:syntastic_check_on_open=1
+
+" experimental ...
 runtime bundle/vim-pathogen/autoload/pathogen.vim
