@@ -1,0 +1,22 @@
+FROM golang:1.12.7-alpine3.10 AS builder
+
+ENV GO111MODULE on
+ENV GOPROXY https://goproxy.cn
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+    && apk upgrade \
+    && apk add git \
+    && go get github.com/shadowsocks/go-shadowsocks2
+
+FROM alpine:3.10 AS dist
+
+LABEL maintainer="someone <anonymous@somewhere.com>"
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+    && apk upgrade \
+    && apk add tzdata \
+    && rm -rf /var/cache/apk/*
+
+COPY --from=builder /go/bin/go-shadowsocks2 /usr/bin/shadowsocks
+
+ENTRYPOINT ["shadowsocks", "-c", "ss://AES-256-CFB:${PASSWORD}@${SERVER_IP}:443", "-socks", ":1050"]
