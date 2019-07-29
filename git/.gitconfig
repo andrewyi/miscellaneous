@@ -1,1 +1,28 @@
+[user]
+    name = andrewyi
+    email = andrew.yi@currentcompany.com
 
+[alias]
+    logtree = log --graph --decorate --oneline --all --abbrev-commit
+    treelog = log --graph --decorate --oneline --all --abbrev-commit
+    ll = log --graph --decorate --oneline --all --abbrev-commit
+    co = checkout
+    d = diff
+    l = log -p
+    b = branch -vva
+    s = status
+    p = pull -p
+    m = mergetool --tool=vimdiff
+    c- = checkout @{-1}
+[push]
+    default = simple
+[core]
+    eitor = vim
+[rerere]
+	enabled = true
+[url "git@bitbucket.org:"]
+	insteadOf = https://bitbucket.org/
+[https]
+    # proxy = socks5://127.0.0.1:1070
+[http]
+    # proxy = socks5://127.0.0.1:1070
