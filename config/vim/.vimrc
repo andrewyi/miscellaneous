@@ -7,7 +7,7 @@
 set foldmethod=indent
 set foldlevel=99
 
-" should the editing content remaining on screen alfter exiting
+" should the editing content remaining on screen when exited
 " set t_ti= t_te=
 
 " set t_Co=256
@@ -20,24 +20,28 @@ set foldlevel=99
 " set term=screen-256color
 
 " common settings
-" set vb
-set wildmenu
+set nocompatible
 syntax on
 filetype plugin indent on
 set ignorecase
-" set tabstop=4
-" set shiftwidth=4
-" set expandtab
+set nowrapscan
+set hlsearch
 set autoindent
 set smartindent 
-set hlsearch
 set wrap
 set number
-set nocompatible
+set wildmenu
+set cursorline
+" we now disable tags file discover
 " set path+=./**
 " set path+=../src
 " set path+=../include
-set cursorline
+
+" common tab settings
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
 
 " encoding settings
 set fileencodings=utf8,cp936
@@ -51,7 +55,8 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 
 " highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 " match OverLength /\%79v.\+/
-set colorcolumn=79
+autocmd FileType python set colorcolumn=79
+autocmd FileType go set colorcolumn=100
 
 " windows settings
 if !has("unix") && has("gui_running")
@@ -69,29 +74,33 @@ elseif has('gui_macvim')
     set guioptions -=b
     set guioptions +=c
     set guifont=Monaco:h12
-    " set guifont=Monaco:h22
 else
     set t_Co=256
 endif
 
 " exiting shortcut
 let mapleader=";"
-nmap qq :q<CR>
-nmap qw :wq<CR>
-nmap qf :q!<CR>
+nnoremap qq :q<CR>
+" nmap qw :wq<CR>
+nnoremap qf :q!<CR>
 
-" line movement
-imap <C-E> <ESC>A
-imap <C-A> <ESC>^i
-imap <C-B> <LEFT>
-imap <C-F> <RIGHT>
+" split
+nnoremap <leader>s :vsplit<CR>
+
+" line movement, like emacs
+inoremap <C-E> <ESC>A
+inoremap <C-A> <ESC>^i
+inoremap <C-B> <LEFT>
+inoremap <C-F> <RIGHT>
 
 nnoremap <silent><C-E> <C-E>j
 nnoremap <silent><C-Y> <C-Y>k
 
-" map all
-map <C-K> <ESC>
-imap <C-K> <ESC>
+" map all, use ctrl+k to esc
+noremap <C-K> <ESC>
+inoremap <C-K> <ESC>
+onoremap <C-K> <ESC>
+cnoremap <C-K> <ESC>
 
 " avoid tmux key conficts, not used anymore
 " nmap <C-[> <C-]>
@@ -104,12 +113,10 @@ imap <C-K> <ESC>
 
 " tab settings
 " nmap vs :vsplit<CR>
-nmap <silent><C-W>n :vnew<CR>
-nmap <silent><TAB>h :tabprev<CR>
-nmap <silent><TAB>l :tabnext<CR>
-nmap <silent> <C-N> :tabnew<CR>
-
-" move split to new tab: Ctrl-W T (capical needed)
+nnoremap <silent><C-W>n :vnew<CR>
+nnoremap <silent><TAB>h :tabprev<CR>
+nnoremap <silent><TAB>l :tabnext<CR>
+nnoremap <silent><C-N> :tabnew<CR>
 
 " noremap <leader>1 1gt
 " noremap <leader>2 2gt
@@ -142,7 +149,6 @@ autocmd Filetype python setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 autocmd Filetype javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab
 autocmd Filetype json setlocal tabstop=2 softtabstop=2 shiftwidth=2 noexpandtab
 autocmd Filetype go setlocal tabstop=2 softtabstop=0 shiftwidth=2 noexpandtab
-" add yaml stuffs
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
@@ -150,7 +156,10 @@ autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
 """"" plugin settings starts from here
 
-
+" reference: https://github.com/junegunn/vim-plug
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+" https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" use :PlugInstall and :PlugClean to install and clean plugins 
 
 call plug#begin('~/.vim/plugged')
 Plug 'https://github.com/nvie/vim-flake8'
@@ -176,8 +185,8 @@ colorscheme kolor " onedark molokai
 
 " NERDTree settings
 " nmap <silent> <F11> :NERDTreeToggle<CR>
-nmap <silent> <C-H> :NERDTreeToggle<CR>
-nmap <silent> <F1> :NERDTreeFind<CR>
+nnoremap <silent> <C-H> :NERDTreeToggle<CR>
+nnoremap <silent> <F1> :NERDTreeFind<CR>
 let NERDTreeIgnore=['\.svn$', '\.git.*$', '\.venv$']
 let NERDTreeChDirMode=1
 let NERDTreeHighlightCursorline=1
@@ -189,6 +198,10 @@ let NERDTreeWinSize=32
 let NERDTreeDirArrows=0
 let NERDTreeMinimalUI=1
 let NERDTreeChDirMode=2
+" force use '+' '~', comment these out when in macos or linux
+let NERDTreeDirArrowExpandable='+'
+let NERDTreeDirArrowCollapsible='~'
+let NERDTreeNodeDelimiter="\u00a0"
 
 
 " bufexplorer settings
@@ -220,14 +233,15 @@ set laststatus=2
 
 
 " fugitive settings
-nmap <leader>gs :Gstatus<CR>
-nmap <leader>gd :Gdiff<CR>
-nmap <leader>gb :Gblame<CR>
-nmap <leader>gl :Glog<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gl :Glog<CR>
 
 
 " easymotion settings
 " map <Leader> <Plug>(easymotion-prefix)
+" noremap not working, don't know why
 map <leader>w <Plug>(easymotion-w)
 map <leader>b <Plug>(easymotion-b)
 map <leader>j <Plug>(easymotion-j)
@@ -252,7 +266,7 @@ let g:flake8_show_quickfix=0
 
 " LeaderF
 " nmap <C-]> :LeaderfFunction!<CR> " this conflics with tmux settings
-nmap <leader>[ :LeaderfFunction!<CR>
+nnoremap <leader>[ :LeaderfFunction!<CR>
 let g:Lf_ShortcutF = '<C-P>'
 let g:Lf_ShortcutB = '<C-J>'
 let g:Lf_RootMarkers = ['.git'] " ['.project', '.root', '.svn']
@@ -268,11 +282,19 @@ let g:Lf_HideHelp = 1
 
 
 " vim-go settings
+autocmd FileType go map <buffer> <F8> :GoMetaLinter<CR>
 " execute :GoInstallBinaries after installed, also :GoUpdateBinaries
+" let g:go_list_type = "quickfix"
+" let g:go_def_mode = 'godef'
 let g:ctrlp_map = ''
-let g:go_highlight_variable_declarations = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_functions = 1
+let g:go_highlight_variable_declarations = 0
+let g:go_highlight_function_calls = 0
+let g:go_highlight_functions = 0
+let g:go_highlight_structs = 0
+let g:go_highlight_interfaces = 1
+let g:go_highlight_operators = 0
+let g:go_highlight_string_spellcheck = 0
+let g:go_highlight_debug = 0
 
 
 " tags settings
